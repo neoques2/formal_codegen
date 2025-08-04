@@ -1,0 +1,8 @@
+main
+Export.c
+lakefile.toml
+.lake/
+*.olean
+*.a
+*.o
+*.so
