@@ -15,26 +15,8 @@ if ! command -v elan &>/dev/null; then
   export PATH="$HOME/.elan/bin:$PATH"
 fi
 
-echo "› Creating Lake project '$PROJECT'…"
-lake init "$PROJECT"
-cd "$PROJECT"
+# python3 -m pip install --user --upgrade leanblueprint
 
-cat > lakefile.lean <<EOF
-import Lake
-open Lake DSL
+export LEAN_PREFIX=$(lean --print-prefix)
+export LD_LIBRARY_PATH="$LEAN_PREFIX/lib/lean:${LD_LIBRARY_PATH:-}"
 
-package $PROJECT where
-  moreLeanArgs := #["-DautoImplicit=false"]
-
-require mathlib from
-  git "https://github.com/leanprover-community/mathlib4" @ "$MATHLIB_REV"
-
-require aesop from
-  git "https://github.com/leanprover-community/aesop" @ "$AESOP_REV"
-
-require batteries from
-  git "https://github.com/leanprover-community/batteries" @ "$BATTERIES_REV"
-EOF
-
-echo "› Installing leanblueprint CLI via pip…"
-python3 -m pip install --user --upgrade leanblueprint
